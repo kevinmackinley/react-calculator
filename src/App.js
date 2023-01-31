@@ -2,13 +2,14 @@ import "./styles.css";
 import { useReducer } from "react";
 import DigitButton from "./DigitButton";
 import OperationButton from "./OperationButton";
+import DeleteDigitButton from "./DeleteDigitButton";
 
 export const ACTIONS = {
   ADD_DIGIT: "add-digit",
   CHOOSE_OPERATION: "choose-operation",
   CLEAR: "clear",
   DELETE_DIGIT: "delete-digit",
-  EVALUATE: "evualuate",
+  EVALUATE: "evaluate",
 };
 
 function reducer(state, { type, payload }) {
@@ -41,6 +42,19 @@ function reducer(state, { type, payload }) {
       };
     case ACTIONS.CLEAR:
       return {};
+    case ACTIONS.DELETE_DIGIT:
+      if(state.currentOperand == null){
+        console.log(state.currentOperand);
+        return{
+          operation: state.operation,
+          previousOperand: state.previousOperand
+      }
+        } return{
+          ...state,
+          currentOperand: state.currentOperand.substring(0,state.currentOperand.length -1),
+          operation: state.operation,
+          previousOperand: state.previousOperand
+      }
   }
 }
 
@@ -64,7 +78,7 @@ function App() {
       >
         AC
       </button>
-      <button>DEL</button>
+      <DeleteDigitButton dispatch={dispatch}>DEL</DeleteDigitButton>
       <OperationButton operation="÷" dispatch={dispatch} />
       <DigitButton digit="1" dispatch={dispatch} />
       <DigitButton digit="2" dispatch={dispatch} />
@@ -84,5 +98,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
